@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.messages.api import success
-from django.urls import path
+from django.urls import path,include
+from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
@@ -9,6 +10,7 @@ from app import views
 urlpatterns = [
     #path('', views.home),
     path('',views.ProductView.as_view(), name='home'),
+    path('show_square/',views.show_square, name='show_square'),
     path('product-detail/<int:pk>', views.ProductDetailView.as_view(), name='product-detail'),
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
     path('cart/',views.showcart,name='showcart'),
@@ -43,10 +45,15 @@ urlpatterns = [
     ='app/password_reset_complete.html'),name='password_reset_complete'),
 
     path('mobile/<slug:data>', views.mobile, name='mobiledata'),
-    path('accounts/login/',auth_views.LoginView.as_view(template_name='app/login.html',
-    authentication_form=LoginForm), name='login'),
+    #path('accounts/login/',auth_views.LoginView.as_view(template_name='app/login.html',
+    #authentication_form=LoginForm), name='login'),
+    path('account/login/',views.LoginView.as_view(),name='login'),
+    path('otp/',views.otp, name='otp'),
     path('logout/',auth_views.LogoutView.as_view(next_page='login'),name='logout'),
     path('registration/', views.CustomerRegistrationView.as_view(),
      name='customerregistration'),
     path('checkout/', views.checkout, name='checkout'),
+    #path('social-auth/', include('social_django.urls', namespace='social')),
+    #url(r'^oauth/', include('social_django.urls', namespace='social')),
+    path('oauth/', include('social_django.urls', namespace='social')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

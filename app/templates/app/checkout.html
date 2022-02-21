@@ -22,7 +22,7 @@
   <div class="col-sm-4 offset-sm-1">
     <h4>Select Shipping Address</h4>
     <hr>
-    <form action="/paymentdone">
+    <form action="/paymentdone" id="mypaypal">
       {% for fm in add %}
       <div class="card">
         <div class="card-body">
@@ -37,10 +37,53 @@
         </div>
         {% endfor %}
         <div class="text-end">
-          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+          <!-- Set up a container element for the button -->
+           <div id="paypal-button-container"></div>
+
+          <!--Square payment -->
+          <a href="{% url 'show_square' %}" class="btn btn-primary">Pay using Square</a>
+
         </div>
       </form>
     </div>
   </div>
 </div>
 {% endblock main-content %}
+{% block paypal-content %}
+<script src="https://www.paypal.com/sdk/js?client-id=ASTgtq8zUhtMYNbxgF8EN4lkZGdQtNyP6RL5qqx_C43Ide4Nb20YCcAT6DJTgFq0Vfn4Km6n5QT5Atq8&currency=USD"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{totalamount}}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                    document.getElementById("mypaypal").submit();
+                    // Replace the above to show a success message within this page, e.g.
+                    // const element = document.getElementById('paypal-button-container');
+                    // element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+{% endblock paypal-content %}

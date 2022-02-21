@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from email.policy import default
 from pathlib import Path
 import os
 
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    #"django_extensions",
+    'social_django',
+    
 ]
 
 MIDDLEWARE = [
@@ -49,9 +53,35 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'shoppinggeek.urls'
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.linkedin.LinkedinOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SOCIAL_AUTH_FACEBOOK_KEY = '598208014763653'        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '0d5c136457e8e6f4debad025dc136d20'
+
+
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '86n2pii9ww9ri1'         # Client ID
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'u7znBdOHiFf7BoBn'  # Client Secret
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'formatted-name', 'public-profile-url', 'picture-url']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
+    ('id', 'id'),
+    ('formattedName', 'name'),
+    ('emailAddress', 'email_address'),
+    ('pictureUrl', 'picture_url'),
+    ('publicProfileUrl', 'profile_url'),
+]
+
 
 TEMPLATES = [
     {
@@ -64,6 +94,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends', 
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -75,15 +108,28 @@ WSGI_APPLICATION = 'shoppinggeek.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'Ecommerce_database',
+#         'USER' : 'postgres',
+#         'PASSWORD' : 980,
+#         'HOST' : 'localhost'
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Ecommerce_database',
-        'USER' : 'postgres',
-        'PASSWORD' : 980,
-        'HOST' : 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME':'E-commerce-database',
+    }
+}"""
 
 
 # Password validation
@@ -104,6 +150,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'app.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

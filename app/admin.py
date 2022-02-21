@@ -1,12 +1,15 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
-from .models import  Customer, Product,Cart,OrderPlaced
+from .models import  Customer, Product,Cart,OrderPlaced,Profile
 # Register your models here.
+User = get_user_model()
+
+admin.site.register(User)
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'name', 'mobile_no', 'locality', 'city', 'pincode', 'state']
+    list_display = ['id', 'user', 'name', 'locality', 'city', 'pincode', 'state']
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -20,3 +23,7 @@ class CartAdmin(admin.ModelAdmin):
 @admin.register(OrderPlaced)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'product', 'quantity', 'order_date', 'status']
+
+@admin.register(Profile)
+class Profile(admin.ModelAdmin):
+    list_display = ['id','user','mobile','otp']

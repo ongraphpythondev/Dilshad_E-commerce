@@ -5,9 +5,9 @@
 <div class="container my-5">
  <div class="row my-3">
   <div class="col-sm-6 offset-sm-3">
-   <h3>Login</h3>
+   <h3>Enter the otp send to your mobile no {{mobile}}</h3>
    <hr>
-   <form  method="post" novalidate class="shadow p-5">
+   <form action="" method="post" novalidate class="shadow p-5">
     {% csrf_token %}
     {% for message in messages %}
     
@@ -16,30 +16,17 @@
            {{ message }}
     </div>
 
-   {% endfor %}
-    {% for fm in form %}
-    <div class="form-group mb-3">
-        {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small><br>
-     </div> 
     {% endfor %}
-    
-
-    <small><a href="{% url 'password_reset' %}" >Forgot Password ?</a></small><br>
-    <input type="submit" value="get otp" class="btn btn-primary">
+        <div class="form-group col-12 mt-3">
+            <input type="text" placeholder="Enter otp" class="form-control" name='otp' />
+        </div>
+    <small><br><a href="{% url 'password_reset' %}" >Forgot Password ?</a></small><br><br>
+    <input type="submit" value="Submit" class="btn btn-primary">
     <br>
     <div class="text-center text-primary fw-bold"><small>New to Shoppinggeek ? 
         <a href="{% url 'customerregistration' %}" class="text-danger">Create an Account</a></small>
 
      </div>
-     <button class="btn btn-info mb-2">
-      <a href="#">Login with Instagram</a>
-  </button>
-  <button class="btn btn-primary mb-2">
-    <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
-</button>
-  <button class="btn btn-info mb-2">
-    <a href="{% url 'social:begin' 'linkedin-oauth2' %}">Login with LinkedIn</a>
-  </button>
      {% if form.non_field_errors %}
          {% for error in form.non_field_errors %} 
             <p class="alert alert-danger my-3">{{error}}</p>
