@@ -66,12 +66,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SOCIAL_AUTH_FACEBOOK_KEY = '598208014763653'        # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '0d5c136457e8e6f4debad025dc136d20'
+SOCIAL_AUTH_FACEBOOK_KEY = ''        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = ''
 
 
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '86n2pii9ww9ri1'         # Client ID
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'u7znBdOHiFf7BoBn'  # Client Secret
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = ''         # Client ID
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = ''  # Client Secret
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
 SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'formatted-name', 'public-profile-url', 'picture-url']
 SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
